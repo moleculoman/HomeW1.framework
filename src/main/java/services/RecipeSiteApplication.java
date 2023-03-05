@@ -1,4 +1,4 @@
-package me.max.recipesite.controllers;
+package services;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,5 +9,4 @@ public class RecipeSiteApplication {
     public static void main(String[] args) {
         SpringApplication.run(RecipeSiteApplication.class, args);
     }
-
 }
