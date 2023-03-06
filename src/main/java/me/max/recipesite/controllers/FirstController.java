@@ -3,12 +3,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.time.LocalDateTime;
-
     @RestController
     public class FirstController {
-    @RequestMapping
-        @GetMapping("/")
+    @RequestMapping("/")
+        @GetMapping
         public String helloWeb() {
             return "Приложение запущено";
         }

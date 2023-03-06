@@ -1,4 +1,4 @@
-package model;
+package me.max.recipesite.model;
 
 public class Ingredient {
     private String title;

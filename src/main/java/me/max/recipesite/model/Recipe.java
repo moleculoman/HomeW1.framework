@@ -1,4 +1,4 @@
-package model;
+package me.max.recipesite.model;
 
 import java.util.List;
 

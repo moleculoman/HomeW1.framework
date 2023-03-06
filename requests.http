@@ -1,0 +1,26 @@
+GET http://localhost:8090
+###
+GET http://localhost:8090/info
+###
+POST http://localhost:8090/recipe
+Content-Type: application/json
+
+{
+  "title": "Test",
+  "cookingTime": 30,
+  "ingredients": [
+    {
+      "title": "Test ingredient",
+      "number": 1,
+      "measure": "spoon"
+    }
+  ],
+  "steps": [
+    "First step",
+    "Second step",
+    "Final step"
+  ]
+}
+###
+GET http://localhost:8090/0
+

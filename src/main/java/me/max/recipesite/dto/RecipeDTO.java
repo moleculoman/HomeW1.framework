@@ -1,7 +1,7 @@
-package dto;
+package me.max.recipesite.dto;
 
-import model.Ingredient;
-import model.Recipe;
+import me.max.recipesite.model.Ingredient;
+import me.max.recipesite.model.Recipe;
 
 import java.util.List;
 

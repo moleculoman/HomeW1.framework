@@ -1,11 +1,8 @@
 package me.max.recipesite.controllers;
-import dto.RecipeDTO;
-import model.Recipe;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import services.RecipeService;
+import me.max.recipesite.dto.RecipeDTO;
+import me.max.recipesite.model.Recipe;
+import org.springframework.web.bind.annotation.*;
+import me.max.recipesite.services.RecipeService;
 
 @RestController
 @RequestMapping("/recipe")
@@ -16,13 +13,13 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-
     @GetMapping("/{id}")
-    public RecipeDTO getRecipe(int id) {
+    public RecipeDTO getRecipe(@PathVariable ("id") int id) {
         return recipeService.getRecipe(id);
     }
 
     @PostMapping
-    public RecipeDTO addRecipe(Recipe recipe) {
+    public RecipeDTO addRecipe(@RequestBody Recipe recipe) {
         return recipeService.addRecipe(recipe);
-    }}
+    }
+}

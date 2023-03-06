@@ -1,8 +1,8 @@
-package services;
+package me.max.recipesite.services;
 
 
-import dto.RecipeDTO;
-import model.Recipe;
+import me.max.recipesite.dto.RecipeDTO;
+import me.max.recipesite.model.Recipe;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
