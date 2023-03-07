@@ -3,7 +3,7 @@ import me.max.recipesite.model.Ingredient;
 import me.max.recipesite.services.IngredientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+//
 @RestController
 @RequestMapping("/ingredient")
 public class IngredientController {
