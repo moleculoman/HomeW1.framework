@@ -7,16 +7,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/ingredient")
 public class IngredientController {
-    private IngredientService ingredientServise;
+    private IngredientService ingredientService;
 
     @PostMapping
     public ResponseEntity createIngredient(@PathVariable Ingredient ingredient){
-        ingredientServise.addIngredient(ingredient);
+        ingredientService.addIngredient(ingredient);
         return ResponseEntity.ok(ingredient);
     }
     @GetMapping("{id}")
     public ResponseEntity getIngredient(@PathVariable long id){
-        Ingredient ingredient = ingredientServise.getIngredient(id);
+        Ingredient ingredient = ingredientService.getIngredient(id);
         if (ingredient == null){
             return ResponseEntity.notFound().build();
         }
