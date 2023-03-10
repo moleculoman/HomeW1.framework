@@ -5,17 +5,34 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 //
 @RestController
-@RequestMapping("/ingredient")
+@RequestMapping("/ingredients")
 public class IngredientController {
-    private IngredientService ingredientService;
+    private final IngredientService ingredientService;
 
-    @PostMapping
-    public ResponseEntity createIngredient(@PathVariable Ingredient ingredient){
+    public IngredientController(IngredientService ingredientService) {
+        this.ingredientService = ingredientService;
+    }
+
+    @PostMapping()
+    public ResponseEntity<Ingredient> addIngredient(@PathVariable Ingredient ingredient){
         ingredientService.addIngredient(ingredient);
         return ResponseEntity.ok(ingredient);
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Ingredient> editIngredient(@PathVariable int id,@RequestBody Ingredient ingredient){
+        ingredientService.editIngredient(id,ingredient);
+        return ResponseEntity.ok(ingredient);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Integer> delIngredient(@PathVariable int id){
+        ingredientService.delIngredient(id);
+        return ResponseEntity.ok(id);
+    }
+
     @GetMapping("{id}")
-    public ResponseEntity getIngredient(@PathVariable long id){
+    public ResponseEntity<Ingredient> getIngredient(@PathVariable int id){
         Ingredient ingredient = ingredientService.getIngredient(id);
         if (ingredient == null){
             return ResponseEntity.notFound().build();

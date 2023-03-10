@@ -1,5 +1,8 @@
 package me.max.recipesite.model;
 
+import lombok.Data;
+
+@Data
 public class Ingredient {
     private String title;
     private int amount;
