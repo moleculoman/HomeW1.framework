@@ -4,6 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import me.max.recipesite.services.RecipeService;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/recipes")
 public class RecipeController {
@@ -26,6 +28,11 @@ public class RecipeController {
             return ResponseEntity.ok(recipe);
         }
 
+        @GetMapping
+        public ResponseEntity<Recipe> getAllRecipes(){
+        return ResponseEntity.ok(recipeService.getAllRecipes());
+        }
+
         @DeleteMapping("{id}")
         public ResponseEntity<Recipe> delRecipe(@PathVariable int id) {
             recipeService.delRecipe(id);
@@ -33,7 +40,7 @@ public class RecipeController {
         }
 
         @PutMapping("{id}")
-        public ResponseEntity<Recipe> editRecipe(@PathVariable int id,@RequestBody Recipe recipe){
+        public ResponseEntity<Recipe> editRecipe(@PathVariable int id,@RequestBody Recipe recipe) throws Exception {
             recipeService.editRecipe(id,recipe);
             return ResponseEntity.ok(recipe);
         }

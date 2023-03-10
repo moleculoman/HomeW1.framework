@@ -17,13 +17,17 @@ public class RecipeService {
         return recipes.get(id);
     }
 
-    public Recipe editRecipe(int id , Recipe recipe){
-        if (recipe == null) {
-            return null;
-        }
-        recipes.put(id,recipe);
-        return recipe;
+    public Recipe getAllRecipes(){
+        return (Recipe) recipes;
     }
+
+    public Recipe editRecipe(int id , Recipe recipe) throws Exception {
+        if (recipes.containsKey(id)) {
+            throw new Exception("Отсутствует рецепт с таким идентификатором");
+        }
+        return recipes.put(id,recipe);
+    }
+
     public boolean delRecipe(int id){
         if (recipes.containsKey(id)){
             recipes.remove(id);

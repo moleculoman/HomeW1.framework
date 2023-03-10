@@ -16,6 +16,9 @@ public class IngredientService {
         return ingredients.get(id);
     }
 
+    public Ingredient getAllIngredients(){
+        return (Ingredient) ingredients;
+    }
     public boolean delIngredient(int id) {
         if (ingredients.containsKey(id)) {
             ingredients.remove(id);
@@ -24,12 +27,10 @@ public class IngredientService {
         return false;
     }
 
-    public Ingredient editIngredient(int id , Ingredient ingredient){
-        if (ingredient == null) {
-            return null;
+    public Ingredient editIngredient(int id , Ingredient ingredient) throws Exception {
+        if (ingredients.containsKey(id)) {
+            throw new Exception("Отсутствует ингредиент с таким идентификатором");
         }
-        ingredients.put(id,ingredient);
-        return ingredient;
+        return ingredients.put(id,ingredient);
     }
-
 }

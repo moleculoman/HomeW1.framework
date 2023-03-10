@@ -1,5 +1,6 @@
 package me.max.recipesite.controllers;
 import me.max.recipesite.model.Ingredient;
+import me.max.recipesite.model.Recipe;
 import me.max.recipesite.services.IngredientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class IngredientController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Ingredient> editIngredient(@PathVariable int id,@RequestBody Ingredient ingredient){
+    public ResponseEntity<Ingredient> editIngredient(@PathVariable int id,@RequestBody Ingredient ingredient) throws Exception {
         ingredientService.editIngredient(id,ingredient);
         return ResponseEntity.ok(ingredient);
     }
@@ -38,5 +39,10 @@ public class IngredientController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(ingredient);
+    }
+
+    @GetMapping
+    public ResponseEntity<Ingredient> getAllIngredients(){
+        return ResponseEntity.ok(ingredientService.getAllIngredients());
     }
 }
