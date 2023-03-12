@@ -29,8 +29,8 @@ public class IngredientService {
 
     public Ingredient editIngredient(int id , Ingredient ingredient) throws Exception {
         if (ingredients.containsKey(id)) {
-            throw new Exception("Отсутствует ингредиент с таким идентификатором");
+            ingredients.put(id,ingredient);
         }
-        return ingredients.put(id,ingredient);
+        throw new Exception("Отсутствует ингредиент с таким идентификатором");
     }
 }

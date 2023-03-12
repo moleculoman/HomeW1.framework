@@ -23,9 +23,9 @@ public class RecipeService {
 
     public Recipe editRecipe(int id , Recipe recipe) throws Exception {
         if (recipes.containsKey(id)) {
-            throw new Exception("Отсутствует рецепт с таким идентификатором");
+            recipes.put(id,recipe);
         }
-        return recipes.put(id,recipe);
+        throw new Exception("Отсутствует рецепт с таким идентификатором");
     }
 
     public boolean delRecipe(int id){
