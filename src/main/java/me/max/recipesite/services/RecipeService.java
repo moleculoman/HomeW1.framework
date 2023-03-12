@@ -1,26 +1,38 @@
 package me.max.recipesite.services;
 
-import me.max.recipesite.dto.RecipeDTO;
 import me.max.recipesite.model.Recipe;
 import org.springframework.stereotype.Service;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Service
 public class RecipeService {
-    private final Map<Integer, Recipe> recipes = new HashMap<>();
-    private int idCounter = 0;
-    public RecipeDTO addRecipe(Recipe recipe){
-        int id = idCounter++;
+    private final Map<Integer, Recipe> recipes = new TreeMap<>();
+    private int id = 0;
+    public void addRecipe(Recipe recipe){
         recipes.put(id,recipe);
-        return RecipeDTO.from(id,recipe);
+        id++;
+    }
+    public Recipe getRecipe(int id) {
+        return recipes.get(id);
     }
 
-    public RecipeDTO getRecipe(int id) {
-        Recipe recipe = recipes.get(id);
-        if (recipe != null) {
-            return RecipeDTO.from(id,recipe);
+    public Recipe getAllRecipes(){
+        return (Recipe) recipes;
+    }
+
+    public Recipe editRecipe(int id , Recipe recipe) throws Exception {
+        if (recipes.containsKey(id)) {
+            recipes.put(id,recipe);
         }
-        return null;
+        throw new Exception("Отсутствует рецепт с таким идентификатором");
+    }
+
+    public boolean delRecipe(int id){
+        if (recipes.containsKey(id)){
+            recipes.remove(id);
+            return true;
+        }
+        return false;
     }
 }

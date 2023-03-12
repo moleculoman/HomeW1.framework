@@ -2,7 +2,7 @@ GET http://localhost:8090
 ###
 GET http://localhost:8090/info
 ###
-POST http://localhost:8090/recipe
+POST http://localhost:8090/recipes
 Content-Type: application/json
 
 {
@@ -23,4 +23,3 @@ Content-Type: application/json
 }
 ###
 GET http://localhost:8090/0
-
