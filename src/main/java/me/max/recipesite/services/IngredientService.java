@@ -1,16 +1,34 @@
 package me.max.recipesite.services;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import me.max.recipesite.model.Ingredient;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 import java.util.Map;
 import java.util.TreeMap;
 
 @Service
 public class IngredientService {
+
+    private final FilesService filesService;
     private final Map<Integer, Ingredient> ingredients = new TreeMap<>();
     private int id = 0;
+
+    @PostConstruct
+    private void init(){
+        readFromFile();
+    }
+
+    public IngredientService(FilesService filesService) {
+        this.filesService = filesService;
+    }
+
     public void addIngredient(Ingredient ingredient){
         ingredients.put(id,ingredient);
         id++;
+        saveToFile();
     }
     public Ingredient getIngredient(int id){
         return ingredients.get(id);
@@ -18,6 +36,7 @@ public class IngredientService {
 
     public Ingredient getAllIngredients(){
         return (Ingredient) ingredients;
+
     }
     public boolean delIngredient(int id) {
         if (ingredients.containsKey(id)) {
@@ -33,6 +52,26 @@ public class IngredientService {
         } else {
             throw new Exception("Отсутствует ингредиент с таким идентификатором");
         }
+        saveToFile();
         return ingredient;
+    }
+
+    private void saveToFile(){
+        try {
+            String json = new ObjectMapper().writeValueAsString(ingredients);
+            filesService.saveToFile(json);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void readFromFile(){
+        try {
+            String json = filesService.readFromFile();
+            new ObjectMapper().readValue(json, new TypeReference<TreeMap<Integer,Ingredient>>() {
+            });
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
