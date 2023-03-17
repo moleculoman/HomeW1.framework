@@ -3,7 +3,6 @@ package me.max.recipesite.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.max.recipesite.model.Ingredient;
 import me.max.recipesite.model.Recipe;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,7 @@ public class RecipeService {
     private void init(){
         readFromFile();
     }
-    private final Map<Integer, Recipe> recipes = new TreeMap<>();
+    private Map<Integer, Recipe> recipes = new TreeMap<>();
     private int id = 0;
 
     public RecipeService(FilesService filesService) {
@@ -38,14 +37,13 @@ public class RecipeService {
         return (Recipe) recipes;
     }
 
-    public Recipe editRecipe(int id , Recipe recipe) throws Exception {
+    public void editRecipe(int id , Recipe recipe) throws Exception {
         if (recipes.containsKey(id)) {
             recipes.put(id,recipe);
         } else {
             throw new Exception("Отсутствует рецепт с таким идентификатором");
         }
         saveToFile();
-        return recipe;
     }
 
     public boolean delRecipe(int id){
@@ -57,19 +55,12 @@ public class RecipeService {
     }
 
     private void saveToFile(){
-        try {
-            String json = new ObjectMapper().writeValueAsString(recipes);
-            filesService.saveToFile(json);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        filesService.saveToFile(recipes,"recipe");
     }
-
     private void readFromFile(){
+        String json = filesService.readFromFile("recipe.json");
         try {
-            String json = filesService.readFromFile();
-            new ObjectMapper().readValue(json, new TypeReference<TreeMap<Integer, Recipe>>() {
-            });
+            recipes = new ObjectMapper().readValue(json, new TypeReference<TreeMap<Integer, Recipe>>() {});
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

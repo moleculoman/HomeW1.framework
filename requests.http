@@ -10,7 +10,7 @@ Content-Type: application/json
   "cookingTime": 30,
   "ingredients": [
     {
-      "title": "Test ingredient",
+      "title": "Test ingredient.json",
       "number": 1,
       "measure": "spoon"
     }

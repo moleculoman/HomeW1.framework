@@ -13,7 +13,7 @@ import java.util.TreeMap;
 public class IngredientService {
 
     private final FilesService filesService;
-    private final Map<Integer, Ingredient> ingredients = new TreeMap<>();
+    private Map<Integer, Ingredient> ingredients = new TreeMap<>();
     private int id = 0;
 
     @PostConstruct
@@ -57,19 +57,12 @@ public class IngredientService {
     }
 
     private void saveToFile(){
-        try {
-            String json = new ObjectMapper().writeValueAsString(ingredients);
-            filesService.saveToFile(json);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        filesService.saveToFile(ingredients,"ingredients");
     }
-
     private void readFromFile(){
+        String json = filesService.readFromFile("ingredient.json");
         try {
-            String json = filesService.readFromFile();
-            new ObjectMapper().readValue(json, new TypeReference<TreeMap<Integer,Ingredient>>() {
-            });
+            ingredients = new ObjectMapper().readValue(json, new TypeReference<TreeMap<Integer, Ingredient>>() {});
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

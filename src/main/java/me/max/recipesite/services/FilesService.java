@@ -1,8 +1,10 @@
 package me.max.recipesite.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,23 +13,21 @@ import java.nio.file.Path;
 public class FilesService {
     @Value("${path.to.data.file}")
     private String dataFilePath;
-
-    @Value("${name.of.data.file}")
-    private String dataFileName;
-
-    public boolean saveToFile (String json){
+    public boolean saveToFile (Object object, String fileName){
+        Path path = Path.of(dataFilePath, fileName + ".json");
         try {
+            String json = new ObjectMapper().writeValueAsString(object);
             cleanDataFile();
-            Files.writeString(Path.of(dataFilePath,dataFileName),json);
+            Files.writeString(path,json);
             return true;
         } catch (IOException e) {
             return false;
         }
     }
 
-    public String readFromFile(){
+    public String readFromFile(String fileName){
         try {
-            return Files.readString(Path.of(dataFilePath,dataFileName));
+            return Files.readString(Path.of(dataFilePath,fileName));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -35,13 +35,16 @@ public class FilesService {
 
     private boolean cleanDataFile(){
         try {
-            Path path = Path.of(dataFilePath,dataFileName);
-            Files.deleteIfExists(path);
-            Files.createFile(path);
+            Files.deleteIfExists(Path.of(dataFilePath));
+            Files.createFile(Path.of(dataFilePath));
             return true;
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public File getDataFile(){
+        return new File(dataFilePath);
     }
 }
