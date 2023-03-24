@@ -1,7 +1,13 @@
 package me.max.recipesite.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import me.max.recipesite.model.Recipe;
 import me.max.recipesite.services.RecipeFilesService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.core.io.InputStreamResource;
@@ -29,18 +35,33 @@ public class RecipeFilesController {
             summary = "Скачивание файла с рецептами",
             description = "Метод для скачки файла"
     )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Рецепты успешно скачаны",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Recipe.class))
+                            )
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Файл с рецептами пуст",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Recipe.class))
+                            )
+                    }
+            )
+    })
     public ResponseEntity<InputStreamResource> downloadDataFile() throws FileNotFoundException {
-        File file = recipeFilesService.getDataFile();
-        if (file.exists()) {
-            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-            return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .contentLength(file.length())
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"AllRecipes.json\"")
-                    .body(resource);
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+        recipeFilesService.downloadDataFile();
+        return downloadDataFile();
     }
 
     @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -48,15 +69,18 @@ public class RecipeFilesController {
             summary = "Загрузка файла с рецептами",
             description = "Метод для загрузки файла"
     )
-    public ResponseEntity<Void> uploadDataFile(@RequestParam MultipartFile file) {
-        recipeFilesService.cleanDataFile();
-        File dataFile = recipeFilesService.getDataFile();
-        try (FileOutputStream fos = new FileOutputStream(dataFile)) {
-            IOUtils.copy(file.getInputStream(), fos);
-            return ResponseEntity.ok().build();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Рецепты успешно загружены"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error"
+            )
+    })
+
+    public void uploadDataFile(@RequestParam MultipartFile file) {
+        recipeFilesService.uploadDataFile(file);
     }
 }
