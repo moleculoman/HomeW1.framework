@@ -1,6 +1,6 @@
 package me.max.recipesite.services;
 
-import io.swagger.v3.oas.annotations.Operation;
+import me.max.recipesite.model.Recipe;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
@@ -9,14 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Service
 public class RecipeFilesService{
@@ -26,6 +26,7 @@ public class RecipeFilesService{
 
     @Value("${name.of.recipes.file}")
     private String recipesFileName;
+
 
     public boolean saveToFile(String json) {
         try {
@@ -87,5 +88,12 @@ public class RecipeFilesService{
         }
     }
 
+    public Path createTempFile(String suffix) {
+        try {
+            return Files.createTempFile(Path.of(recipesFilePath), "tempFile", suffix);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

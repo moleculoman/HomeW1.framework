@@ -10,6 +10,7 @@ import me.max.recipesite.model.Ingredient;
 import me.max.recipesite.services.IngredientFilesService;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -80,7 +81,13 @@ public class IngredientFilesController {
                     description = "Internal server error"
             )
     })
-    public void uploadDataFile(@RequestParam MultipartFile file) {
+    public ResponseEntity<Void> uploadDataFIle(@RequestParam MultipartFile file) {
         ingredientFilesService.uploadDataFile(file);
+        if (file.getResource().exists()) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 }
+
+
