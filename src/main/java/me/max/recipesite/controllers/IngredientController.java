@@ -1,13 +1,10 @@
 package me.max.recipesite.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
 import me.max.recipesite.model.Ingredient;
 import me.max.recipesite.services.IngredientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 @RestController
 @RequestMapping("/ingredients")
@@ -24,7 +21,7 @@ public class IngredientController {
             summary = "Добавление ингредиента по id",
             description = "Метод для добавления рецепта в базу ингредиентов"
     )
-    public ResponseEntity<Ingredient> addIngredient(@PathVariable Ingredient ingredient){
+    public ResponseEntity<Ingredient> addIngredient(@RequestBody Ingredient ingredient){
         ingredientService.addIngredient(ingredient);
         return ResponseEntity.ok(ingredient);
     }

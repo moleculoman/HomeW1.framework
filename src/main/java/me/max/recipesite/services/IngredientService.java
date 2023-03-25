@@ -60,7 +60,7 @@ public class IngredientService {
         filesService.saveToFile(ingredients,"ingredients");
     }
     private void readFromFile(){
-        String json = filesService.readFromFile("ingredient.json");
+        String json = filesService.readFromFile("ingredients.json");
         try {
             ingredients = new ObjectMapper().readValue(json, new TypeReference<TreeMap<Integer, Ingredient>>() {});
         } catch (JsonProcessingException e) {
